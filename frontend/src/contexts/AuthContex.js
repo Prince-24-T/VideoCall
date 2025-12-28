@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-const server = "http://localhost:8080";
+const server = "http://";
 
 export const AuthContext = createContext();
 

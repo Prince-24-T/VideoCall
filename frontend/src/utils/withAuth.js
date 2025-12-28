@@ -7,9 +7,12 @@ const withAuth = (WrappedComponent) => {
     const router = useNavigate();
 
     const isAuthenticated = async () => {
-      let res = await axios.get("http://localhost:8080/userVerification", {
-        withCredentials: true,
-      });
+      let res = await axios.get(
+        "https://videocallbackend-2q3i.onrender.com/userVerification",
+        {
+          withCredentials: true,
+        }
+      );
       if (res.data.status === false) {
         return false;
       }
