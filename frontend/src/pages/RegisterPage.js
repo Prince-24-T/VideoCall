@@ -26,7 +26,7 @@ export default function RegisterPage() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/register",
+        "https://videocallbackend-2q3i.onrender.com/register",
         credentials,
         { withCredentials: true }
       );
