@@ -16,17 +16,23 @@ export default function LandingPage() {
 
   const router = useNavigate();
   const handleLogout = async () => {
-    let res = await axios.get("http://localhost:8080/logout", {
-      withCredentials: true,
-    });
+    let res = await axios.get(
+      "https://videocallbackend-2q3i.onrender.com/logout",
+      {
+        withCredentials: true,
+      }
+    );
 
     setIsLogin(false);
     setUsername(null);
   };
   const userVerification = async () => {
-    let res = await axios.get("http://localhost:8080/userVerification", {
-      withCredentials: true,
-    });
+    let res = await axios.get(
+      "https://videocallbackend-2q3i.onrender.com/userVerification",
+      {
+        withCredentials: true,
+      }
+    );
 
     if (res.data.status) {
       setIsLogin(true);
