@@ -1,7 +1,5 @@
 const idProd = true;
 
-const server = idProd
-  ? "https://videocallbackend-2q3i.onrender.com"
-  : "http://localhost:8080";
+const server = "https://videocallbackend-2q3i.onrender.com";
 
 module.exports = server;
