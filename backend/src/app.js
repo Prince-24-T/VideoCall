@@ -16,7 +16,10 @@ app.use(cookies());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://videocallfrontend-p929.onrender.com",
+    ],
     credentials: true,
   })
 );
