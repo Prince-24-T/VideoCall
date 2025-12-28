@@ -1,0 +1,77 @@
+import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContex";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Box from "@mui/material/Box";
+import { IconButton } from "@mui/material";
+import CardActions from "@mui/material/CardActions";
+import HomeIcon from "@mui/icons-material/Home";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+
+export default function History() {
+  let { getUserHistory } = useContext(AuthContext);
+
+  const [meetings, setMettings] = useState([]);
+
+  const routeTo = useNavigate();
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const history = await getUserHistory();
+        setMettings(history);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchHistory();
+  });
+
+  let formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
+  return (
+    <div>
+      <IconButton
+        onClick={() => {
+          routeTo("/home");
+        }}
+      >
+        <HomeIcon />
+      </IconButton>
+      {meetings.length !== 0 ? (
+        meetings.map((e, i) => {
+          return (
+            <>
+              <Card key={i} variant="outlined">
+                <CardContent>
+                  <Typography
+                    sx={{ fontSize: 14 }}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Code: {e.meetingCode}
+                  </Typography>
+
+                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    Date: {formatDate(e.date)}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </>
+          );
+        })
+      ) : (
+        <></>
+      )}
+    </div>
+  );
+}
