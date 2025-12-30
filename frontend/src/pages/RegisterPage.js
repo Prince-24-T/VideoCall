@@ -87,7 +87,7 @@ export default function RegisterPage() {
               />
             </div>
             {/* <button type="submit">Register</button> */}
-            <Button variant="contained" type="sumit">
+            <Button variant="contained" type="submit">
               Register
             </Button>
           </form>

@@ -79,7 +79,7 @@ export default function LoginPage() {
               />
             </div>
             {/* <button type="submit">Register</button> */}
-            <Button variant="contained" type="sumit">
+            <Button variant="contained" type="submit">
               Login
             </Button>
           </form>
