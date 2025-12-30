@@ -15,7 +15,6 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-  console.log("object");
 
   useEffect(() => {
     setToken(window.localStorage.getItem("token"));
@@ -28,6 +27,7 @@ export default function LoginPage() {
 
   const handleSumbit = async (e) => {
     e.preventDefault();
+    console.log("clicked");
     try {
       const response = await axios.post(`${server}/login`, credentials, {
         withCredentials: true,

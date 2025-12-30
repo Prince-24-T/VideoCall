@@ -112,7 +112,7 @@ export default function LandingPage() {
               variant="contained"
               color="success"
               onClick={() => {
-                window.location.href = "/video";
+                router("/video");
               }}
             >
               Get Started

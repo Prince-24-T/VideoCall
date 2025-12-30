@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
     const user = await User.findOne({ email });
     if (user) {
       res
-        .status(httpStatus.FOUND)
+        .status(409)
         .json({ message: "user already exist with this email address" });
     }
     const hashedPass = await bcrypt.hash(password, 10);
@@ -26,7 +26,6 @@ const register = async (req, res, next) => {
     res.cookie("token", token, {
       maxAge: 60 * 60 * 1000,
       secure: true,
-
       httpOnly: true, // set true for secure auth
       sameSite: "none",
       path: "/",
@@ -78,7 +77,7 @@ const authMe = (req, res) => {
 };
 
 const getHistory = async (req, res) => {
-  const token = req.cookies.token; // ✅ correct
+  const token = req.cookies.token;
 
   if (!token) {
     return res.status(401).json({ message: "No token" });
@@ -87,16 +86,15 @@ const getHistory = async (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.secretKey);
 
-    const user = await User.findById(decoded.id); // make sure your JWT uses { id: user._id }
+    const user = await User.findById(decoded.id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // get all meetings for this user
     const meetings = await Meeting.find({ user_id: user._id });
 
-    return res.json({ meetings }); // return plural 'meetings'
+    return res.json({ meetings });
   } catch (e) {
     console.log(e);
     return res.status(500).json({ message: `Something went wrong: ${e}` });
@@ -131,9 +129,7 @@ const addToHistory = async (req, res, next) => {
       meetingCode: meeting_code,
     });
     await newMeeting.save();
-    return res
-      .status(httpStatus.CREATED)
-      .json({ message: "Added code to history" });
+    return res.status(201).json({ message: "Added code to history" });
   } catch (e) {
     return res.json({ message: `Something went wrong ${e}` });
   }
