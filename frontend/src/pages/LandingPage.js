@@ -32,7 +32,7 @@ export default function LandingPage() {
 
     if (res.data.status) {
       setIsLogin(true);
-      console.log(res.data);
+
       setUsername(res.data.user);
     } else {
       setIsLogin(false);
