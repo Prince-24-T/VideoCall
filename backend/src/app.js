@@ -11,7 +11,7 @@ import { authMe } from "./controllers/userController.js";
 import useVerification from "./controllers/userVerification.js";
 import bodyParser from "body-parser";
 dotenv.config();
-app.use(bodyParser.json());
+
 const app = express();
 app.use(cookies());
 
@@ -24,6 +24,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
