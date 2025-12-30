@@ -11,9 +11,9 @@ const register = async (req, res, next) => {
     const { username, email, password } = req.body;
     const user = await User.findOne({ email });
     if (user) {
-      return res
-        .status(409)
-        .json({ message: "user already exist with this email address" });
+      return res.json({
+        message: "user already exist with this email address",
+      });
     }
     const hashedPass = await bcrypt.hash(password, 10);
     const newUser = await User.create({
@@ -43,11 +43,11 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
     const newUser = await User.findOne({ email });
     if (!newUser) {
-      return res.status(404).json({ message: "Email is Incorrect" });
+      return res.json({ message: "Email is Incorrect" });
     }
     const hashPass = await bcrypt.compare(password, newUser.password);
     if (!hashPass) {
-      return res.status(401).json({ message: "Password is Incorrect" });
+      return res.json({ message: "Password is Incorrect" });
     }
     const token = jsoWebToken(newUser._id);
     res.cookie("token", token, {
@@ -55,19 +55,18 @@ const login = async (req, res, next) => {
       secure: true,
       httpOnly: true, // set true for secure auth
       sameSite: "none",
-      path: "/",
     });
 
-    return res.status(200).json({ message: "User is LoggedIn" });
+    return res.status(201).json({ message: "User is LoggedIn" });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ message: "Server error" });
+    return res.json({ message: "Server error" });
   }
 };
 
 const authMe = (req, res) => {
   const token = req.cookies.token;
-  if (!token) return res.status(401).json({ auth: false });
+  if (!token) return res.json({ auth: false });
 
   const user = jwt.verify(token, process.env.secretKey);
   return res.json({ auth: true, user });
@@ -77,7 +76,7 @@ const getHistory = async (req, res) => {
   const token = req.cookies.token;
 
   if (!token) {
-    return res.status(401).json({ message: "No token" });
+    return res.json({ message: "No token" });
   }
 
   try {
@@ -86,7 +85,7 @@ const getHistory = async (req, res) => {
     const user = await User.findById(decoded.id);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.json({ message: "User not found" });
     }
 
     const meetings = await Meeting.find({ user_id: user._id });
@@ -94,7 +93,7 @@ const getHistory = async (req, res) => {
     return res.json({ meetings });
   } catch (e) {
     console.log(e);
-    return res.status(500).json({ message: `Something went wrong: ${e}` });
+    return res.json({ message: `Something went wrong: ${e}` });
   }
 };
 
@@ -106,7 +105,7 @@ const logout = async (req, res, next) => {
       sameSite: "none",
       path: "/",
     });
-    return res.status(200).json({ message: "Logged out successfully" });
+    return res.status(201).json({ message: "Logged out successfully" });
   } catch (err) {
     console.log(err);
   }
@@ -117,7 +116,7 @@ const addToHistory = async (req, res, next) => {
     const { meeting_code } = req.body;
     let token = req.cookies.token;
     if (!token) {
-      return res.status(401).json({ message: "Not Token" });
+      return res.json({ message: "Not Token" });
     }
     let decode = await jwt.verify(token, process.env.secretKey);
     const user = await User.findById(decode.id);

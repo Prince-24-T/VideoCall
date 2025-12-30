@@ -9,8 +9,9 @@ import connectToServer from "./controllers/socketManger.js";
 import userRoute from "./routes/user.routes.js";
 import { authMe } from "./controllers/userController.js";
 import useVerification from "./controllers/userVerification.js";
+const bodyParser = require("body-parser");
 dotenv.config();
-
+app.use(bodyParser.json());
 const app = express();
 app.use(cookies());
 
