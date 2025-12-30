@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { server } from "../enviroment";
 
 export default function LoginPage() {
   const [message, setMessage] = useState(null);
@@ -19,7 +20,7 @@ export default function LoginPage() {
   useEffect(() => {
     setToken(window.localStorage.getItem("token"));
     setMessage(window.localStorage.getItem("message"));
-  }, [token, setToken, message, setMessage]);
+  }, []);
   const navigate = useNavigate();
   const handleInput = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -28,13 +29,12 @@ export default function LoginPage() {
   const handleSumbit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://videocallbackend-2q3i.onrender.com/login",
-        credentials,
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${server}/login`, credentials, {
+        withCredentials: true,
+      });
       console.log(response.data);
       window.localStorage.setItem("message", response.data.message);
+      console.log(response.data.message);
 
       navigate("/");
     } catch (err) {

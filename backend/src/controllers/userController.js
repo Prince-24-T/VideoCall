@@ -25,10 +25,10 @@ const register = async (req, res, next) => {
 
     res.cookie("token", token, {
       maxAge: 60 * 60 * 1000,
-      secure: false,
+      secure: true,
 
       httpOnly: true, // set true for secure auth
-      sameSite: "lax",
+      sameSite: "none",
       path: "/",
     });
 
@@ -44,22 +44,26 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
     const newUser = await User.findOne({ email });
     if (!newUser) {
-      res.status(httpStatus.NOT_FOUND).json({ message: "Email is Incorrect" });
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "Email is Incorrect" });
     }
     const hashPass = await bcrypt.compare(password, newUser.password);
     if (!hashPass) {
-      res.status(httpStatus.FOUND).json({ message: "Password is Incorrect" });
+      return res
+        .status(httpStatus.FOUND)
+        .json({ message: "Password is Incorrect" });
     }
     const token = jsoWebToken(newUser._id);
     res.cookie("token", token, {
       maxAge: 60 * 60 * 1000,
-      secure: false,
+      secure: true,
       httpOnly: true, // set true for secure auth
-      sameSite: "lax",
+      sameSite: "none",
       path: "/",
     });
 
-    res.status(201).json({ message: "User is LoggedIn" });
+    return res.status(201).json({ message: "User is LoggedIn" });
   } catch (err) {
     console.log(err);
   }
@@ -70,7 +74,7 @@ const authMe = (req, res) => {
   if (!token) return res.status(401).json({ auth: false });
 
   const user = jwt.verify(token, process.env.secretKey);
-  res.json({ auth: true, user });
+  return res.json({ auth: true, user });
 };
 
 const getHistory = async (req, res) => {
@@ -103,8 +107,8 @@ const logout = async (req, res, next) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       path: "/",
     });
     return res.status(200).json({ message: "Logged out successfully" });

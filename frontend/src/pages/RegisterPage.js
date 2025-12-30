@@ -4,6 +4,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { server } from "../enviroment";
 
 export default function RegisterPage() {
   const [message, setMessage] = useState(null);
@@ -25,11 +26,9 @@ export default function RegisterPage() {
   const handleSumbit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://videocallbackend-2q3i.onrender.com/register",
-        credentials,
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${server}/register`, credentials, {
+        withCredentials: true,
+      });
 
       window.localStorage.setItem("message", response.data.message);
       navigate("/video");

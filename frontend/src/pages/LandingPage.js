@@ -7,6 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import MaleIcon from "@mui/icons-material/Male";
 import PersonIcon from "@mui/icons-material/Person";
+import { server } from "../enviroment";
 
 export default function LandingPage() {
   const [token, setToken] = useState();
@@ -16,23 +17,18 @@ export default function LandingPage() {
 
   const router = useNavigate();
   const handleLogout = async () => {
-    let res = await axios.get(
-      "https://videocallbackend-2q3i.onrender.com/logout",
-      {
-        withCredentials: true,
-      }
-    );
+    let res = await axios.get(`${server}/logout`, {
+      withCredentials: true,
+    });
 
     setIsLogin(false);
     setUsername(null);
+    setMessage(res.data.message);
   };
   const userVerification = async () => {
-    let res = await axios.get(
-      "https://videocallbackend-2q3i.onrender.com/userVerification",
-      {
-        withCredentials: true,
-      }
-    );
+    let res = await axios.get(`${server}/userVerification`, {
+      withCredentials: true,
+    });
 
     if (res.data.status) {
       setIsLogin(true);
