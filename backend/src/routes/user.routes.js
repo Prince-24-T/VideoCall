@@ -15,9 +15,6 @@ import {
 } from "../controllers/userController.js";
 import { verify } from "../controllers/verifyController.js";
 const router = Router();
-router.get("/", (req, res) => {
-  res.send("hello users");
-});
 
 router.route("/verify").get(verify);
 router.route("/login").post(login);
