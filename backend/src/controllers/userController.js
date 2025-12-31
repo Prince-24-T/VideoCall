@@ -33,8 +33,8 @@ const register = async (req, res, next) => {
 
     return res.status(201).json({ message: "User is registed" });
   } catch (err) {
-    console.log(err);
-    res.status(httpStatus.FOUND).json({ message: "Server error" });
+    console.log(err.message);
+    return res.json({ message: "Server error" });
   }
 };
 
@@ -107,7 +107,7 @@ const logout = async (req, res, next) => {
     });
     return res.status(201).json({ message: "Logged out successfully" });
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 };
 
