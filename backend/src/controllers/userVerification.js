@@ -16,7 +16,7 @@ const userVerification = async (req, res) => {
     const user = await User.findById(decoded.id);
 
     if (!user) {
-      return res.json({ status: false, username: user.username });
+      return res.json({ status: false });
     }
 
     console.log(user.username);
