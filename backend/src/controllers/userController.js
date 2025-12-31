@@ -29,6 +29,7 @@ const register = async (req, res, next) => {
       httpOnly: true, // set true for secure auth
       sameSite: "none",
       path: "/",
+      partitioned: true,
     });
 
     return res.status(201).json({ message: "User is registed" });
@@ -56,6 +57,7 @@ const login = async (req, res, next) => {
       httpOnly: true, // set true for secure auth
       sameSite: "none",
       path: "/",
+      partitioned: true,
     });
 
     return res.status(201).json({ message: "User is LoggedIn" });
@@ -105,6 +107,7 @@ const logout = async (req, res, next) => {
       secure: true,
       sameSite: "none",
       path: "/",
+      partitioned: true,
     });
     return res.status(201).json({ message: "Logged out successfully" });
   } catch (err) {
