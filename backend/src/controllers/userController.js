@@ -55,6 +55,7 @@ const login = async (req, res, next) => {
       secure: true,
       httpOnly: true, // set true for secure auth
       sameSite: "none",
+      path: "/",
     });
 
     return res.status(201).json({ message: "User is LoggedIn" });
