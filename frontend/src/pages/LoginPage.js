@@ -33,10 +33,13 @@ export default function LoginPage() {
         withCredentials: true,
       });
       console.log(response.data);
-      window.localStorage.setItem("message", response.data.message);
       console.log(response.data.message);
-
-      navigate("/");
+      if (response.status === 201) {
+        window.localStorage.setItem("message", response.data.message);
+        setTimeout(() => {
+          navigate("/");
+        }, 100); //
+      }
     } catch (err) {
       console.log(err);
     }
